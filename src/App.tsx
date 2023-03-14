@@ -1,32 +1,55 @@
 import { useState } from "react";
 import styled from "@emotion/styled";
+import { css } from "@emotion/react";
 
 const TitleStyled = styled.h1`
     text-align: center;
-    margin-bottom: 40px;
 `;
 
 const ScrollStyled = styled.div`
     width: 100%;
     height: 100vmin;
     max-height: 70vh;
+    margin: 40px 0px;
 
     display: flex;
     align-items: center;
-    column-gap: 20px;
 
-    overflow-x: auto;
-    overflow-y: hidden;
+    &.row {
+        column-gap: 20px;
 
-    scroll-snap-type: x mandatory;
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        scroll-snap-type: x mandatory;
+    }
+
+    &.column {
+        flex-direction: column;
+        row-gap: 20px;
+
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        scroll-snap-type: y mandatory;
+    }
 `;
 
 const ContentStyled = styled.div`
     flex: 0 0 auto;
-    width: 80%;
-    height: 100%;
     scroll-snap-align: start;
-    padding-left: 20px;
+
+    &.row {
+        width: 80%;
+        height: 100%;
+        padding-left: 20px;
+    }
+
+    &.column {
+        width: 100%;
+        height: 80%;
+        padding-top: 20px;
+    }
 `;
 
 const ImgStyled = styled.img`
@@ -37,18 +60,21 @@ const ImgStyled = styled.img`
 `;
 
 function App() {
+    const types = ["row", "column"];
     const imgs = ["1.jpg", "2.jpg", "3.jpg", "4.jpg"];
 
     return (
         <div>
             <TitleStyled>Scroll Snap API</TitleStyled>
-            <ScrollStyled>
-                {imgs.map((img) => (
-                    <ContentStyled>
-                        <ImgStyled src={`images/${img}`} alt={img} />
-                    </ContentStyled>
-                ))}
-            </ScrollStyled>
+            {types.map((type) => (
+                <ScrollStyled className={type}>
+                    {imgs.map((img) => (
+                        <ContentStyled className={type}>
+                            <ImgStyled src={`images/${img}`} alt={img} />
+                        </ContentStyled>
+                    ))}
+                </ScrollStyled>
+            ))}
         </div>
     );
 }
